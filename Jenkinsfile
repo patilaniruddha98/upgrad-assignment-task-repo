@@ -25,10 +25,12 @@ pipeline{
             then
                 docker stop ${CONTAINER_NAME}
             fi
+
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 186313464150.dkr.ecr.us-east-1.amazonaws.com
+            docker build -t 186313464150.dkr.ecr.us-east-1.amazonaws.com/assignment-2-upgrad:v${BUILD_NUMBER} .
+            docker push 186313464150.dkr.ecr.us-east-1.amazonaws.com/assignment-2-upgrad:v${BUILD_NUMBER}
             '''
-            sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 186313464150.dkr.ecr.us-east-1.amazonaws.com"
-            sh "docker build -t 186313464150.dkr.ecr.us-east-1.amazonaws.com/assignment-2-upgrad:v${BUILD_NUMBER} ."
-            sh "docker push 186313464150.dkr.ecr.us-east-1.amazonaws.com/assignment-2-upgrad:v${BUILD_NUMBER}"
+             
         }
        }
        stage('Deploy Stage'){
