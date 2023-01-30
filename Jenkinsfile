@@ -20,7 +20,7 @@ pipeline{
        } 
        stage('Build and Push'){
         steps{
-            '''
+            sh '''
             if [ ! "$(docker ps -q -f name=${CONTAINER_NAME})" ]
             then
                 docker stop ${CONTAINER_NAME}
