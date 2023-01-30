@@ -1,5 +1,4 @@
 pipeline{
-    //agent any
     agent { label 'app'}
     options{
         buildDiscarder(logRotator(daysToKeepStr: '15'))
