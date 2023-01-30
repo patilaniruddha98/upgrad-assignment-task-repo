@@ -20,7 +20,12 @@ pipeline{
        } 
        stage('Build and Push'){
         steps{
-            sh "docker stop ${CONTAINER_NAME}"
+            '''
+            if [ ! "$(docker ps -q -f name=${CONTAINER_NAME})" ]
+            then
+                docker stop ${CONTAINER_NAME}
+            fi
+            '''
             sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 186313464150.dkr.ecr.us-east-1.amazonaws.com"
             sh "docker build -t 186313464150.dkr.ecr.us-east-1.amazonaws.com/assignment-2-upgrad:v${BUILD_NUMBER} ."
             sh "docker push 186313464150.dkr.ecr.us-east-1.amazonaws.com/assignment-2-upgrad:v${BUILD_NUMBER}"
