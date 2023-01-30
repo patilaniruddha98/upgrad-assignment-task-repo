@@ -10,7 +10,7 @@ pipeline{
     environment{
         ECS_CLUSTER = "hello-app"
         ENVIRONMENT = "global"
-        CONTAINER_NAME = "Hello_container"
+        CONTAINER_NAME = "hello_container"
     }
     stages{
        stage('Git Checkout'){
@@ -23,7 +23,7 @@ pipeline{
             sh '''
             if [ "$(docker ps -q -f name=${CONTAINER_NAME})" ]
             then
-                docker stop ${CONTAINER_NAME}
+                docker rm --force ${CONTAINER_NAME}
             fi
 
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 186313464150.dkr.ecr.us-east-1.amazonaws.com
