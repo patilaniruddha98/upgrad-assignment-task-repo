@@ -1,26 +1,44 @@
 pipeline{
+    //agent any
     agent any
-
+    options{
+        buildDiscarder(logRotator(daysToKeepStr: '15'))
+        disableConcurrentBuilds()
+        timeout(time: 5, unit: 'MINUTES')
+        retry (3)
+    }
+    
+    environment{
+        ECS_CLUSTER = "hello-app"
+        ENVIRONMENT = "global"
+    }
     stages{
-        stage('Git Pull') {
-            steps {
-                sh "echo Hello i am second stage"
-            }
+       stage('Git Checkout'){
+        steps{
+            checkout scm
         }
-
-        
-        stage('second stage'){
-            steps{
-                sh "echo Hello i am second stage"
-                sh "echo running in stage 2 "
-                sh "ls"
-            }
-           
-        }    
+       } 
+       stage('Build and Push'){
+        steps{
+            sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 186313464150.dkr.ecr.us-east-1.amazonaws.com"
+            sh "cd upgrad-assignment-task-repo && docker build -t 186313464150.dkr.ecr.us-east-1.amazonaws.com/hello:v${BUILD_NUMBER} ."
+            sh "docker push 186313464150.dkr.ecr.us-east-1.amazonaws.com/hello:v${BUILD_NUMBER}"
         }
+       }
+       stage('Deploy Stage'){
+        steps{
+            sh '''
+            IMAGE="186313464150.dkr.ecr.us-east-1.amazonaws.com/hello:v${BUILD_NUMBER}"
+            docker pull $IMAGE
+            docker run -itd -p 8080:8081 $IMAGE
+            '''
+        }
+       } 
+    }
     post{
         always{
-            sh "echo final stage"
+            sh "echo running final steps"
         }
     }
+
 }
