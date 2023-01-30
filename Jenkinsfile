@@ -10,7 +10,7 @@ pipeline{
     environment{
         ECS_CLUSTER = "hello-app"
         ENVIRONMENT = "global"
-        CONTAINER_NAME = "hello_container"
+        CONTAINER_NAME = "my_container"
     }
     stages{
        stage('Git Checkout'){
