@@ -29,7 +29,7 @@ pipeline{
             sh '''
             IMAGE="186313464150.dkr.ecr.us-east-1.amazonaws.com/assignment-2-upgrad:v${BUILD_NUMBER}"
             docker pull $IMAGE
-            docker run -itd -p 8080:8081 $IMAGE
+            docker run -itd --name hello_container -p 8080:8081 $IMAGE
             '''
         }
        } 
