@@ -6,7 +6,7 @@ module "bastion" {
 
   ami                    = "ami-00874d747dde814fa"
   instance_type          = "t2.medium"
-  key_name               = "courseAssignment"
+  key_name               = "aniruddha-upgrad-assignment-2"
   monitoring             = true
   vpc_security_group_ids = [module.bastion_sg.security_group_id]
   subnet_id              = module.vpc.public_subnets[0]
@@ -25,7 +25,7 @@ module "jenkins" {
 
   ami                    = "ami-00874d747dde814fa"
   instance_type          = "t2.medium"
-  key_name               = "courseAssignment"
+  key_name               = "aniruddha-upgrad-assignment-2"
   monitoring             = true
   vpc_security_group_ids = [module.private_instance_sg.security_group_id]
   subnet_id              = module.vpc.private_subnets[0]
@@ -44,7 +44,7 @@ module "app" {
 
   ami                    = "ami-00874d747dde814fa"
   instance_type          = "t2.medium"
-  key_name               = "courseAssignment"
+  key_name               = "aniruddha-upgrad-assignment-2"
   monitoring             = true
   vpc_security_group_ids = [module.private_instance_sg.security_group_id]
   subnet_id              = module.vpc.private_subnets[1]
