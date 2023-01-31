@@ -1,5 +1,5 @@
 pipeline{
-    agent { label 'app'}
+    agent { label 'worker'}
     options{
         buildDiscarder(logRotator(daysToKeepStr: '15'))
         disableConcurrentBuilds()
